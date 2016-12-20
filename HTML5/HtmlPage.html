@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+
+    <script type="text/javascript">
+
+       var app = angular.module("bootstraplist", []);
+        app.controller("myCtrl", function ($scope, $timeout) {
+
+            $scope.imgmodel = [
+                {
+                    "account": "AAA-1238",
+                    "totalasset": "$45,121.90",
+                    "todayschange": "+0.07% / $31.87",
+                    "todayschangecolor": ''
+                },
+                {
+                    "account": "AAA-8122",
+                    "totalasset": "$12,335.79",
+                    "todayschange": "-0.03% / $7.83",
+                    "todayschangecolor": ''
+                },
+                {
+                    "account": "AAA-1812",
+                    "totalasset": "$11,900,34",
+                    "todayschange": "0.00% / $0.00",
+                    "todayschangecolor": ''
+                },
+                {
+                    "account": "AAA-3028",
+                    "totalasset": "$155.99",
+                    "todayschange": "0.00% / $0.00",
+                    "todayschangecolor": ''
+                },
+               {
+                   "account": "AAA-1238",
+                   "totalasset": "$45,121.90",
+                   "todayschange": "+0.07% / $31.87",
+                   "todayschangecolor": ''
+               },
+                {
+                    "account": "AAA-8122",
+                    "totalasset": "$12,335.79",
+                    "todayschange": "-0.03% / $7.83",
+                    "todayschangecolor": ''
+                },
+                {
+                    "account": "AAA-1812",
+                    "totalasset": "$11,900,34",
+                    "todayschange": "0.00% / $0.00",
+                    "todayschangecolor": ''
+                },
+                {
+                    "account": "AAA-3028",
+                    "totalasset": "$155.99",
+                    "todayschange": "0.00% / $0.00",
+                    "todayschangecolor": ''
+                },
+            ];
+
+            angular.forEach($scope.imgmodel, function (value, key) {
+                switch (extractOperator(value.todayschange)) {
+                    case "+":
+                        value.todayschangecolor = "green";
+                        break;
+                    case "-":
+                        value.todayschangecolor = "red";
+                        break;
+                    case "0":
+                        value.todayschangecolor = "gray";
+                        break;
+                }
+            });
+
+            function extractOperator(content) {
+                if (content.indexOf('+') !== -1) {
+                    return '+';
+                } else if (content.indexOf('-') !== -1) {
+                    return '-';
+                } else {
+                    return '0';
+                }
+            }
+        });
+
+
+
+
+
+        function applyCSS(ctrl) {
+            var rmSpCharacter = removeSpecialChars($(ctrl).find('h4#totalasset')[0].textContent);
+            var grt = false;
+            for (var i = 0; i < rmSpCharacter.length; i++) {
+                if (rmSpCharacter[i + 1] === undefined) break;
+                if (rmSpCharacter[i + 1] >= rmSpCharacter[i]) {
+                    grt = true;
+                } else {
+                    grt = false;
+                    break;
+                }
+            }
+            if (grt) {
+                $(ctrl).css({
+                    "background-color": "lightblue"
+                });
+            } else {
+                $(ctrl).css({
+                    "background-color": "white"
+                });
+            }
+
+        }
+
+
+        function removeCSS(ctrl) {
+            $(ctrl).css({
+                "background-color": "white"
+            });
+        }
+
+        function removeSpecialChars(strVal) {
+            return strVal.replace(/[^a-zA-Z 0-9]+/g, '');
+        }
+    </script>
+
+    <style type="text/css">
+        .spx {
+            padding-bottom: 22px;
+            padding-top: 30px;
+        }
+
+        .list-group {
+            width: 450px;
+        }
+
+        .list-group-item.firstitem {
+            height: 60px;
+            border-left: 0 none;
+            border-right: 0 none;
+            border-top: 0 none;
+        }
+
+        .list-group-item {
+            vertical-align: middle;
+            height: 60px;
+            border-left: 0 none;
+            border-right: 0 none;
+        }
+
+        .list-group-item-heading {
+            font-size: small;
+        }
+    </style>
+
+</head>
+<body ng-app="bootstraplist" ng-controller="myCtrl">
+
+    <div class="container selector">
+        <h4 class="spx">Image1:</h4>
+
+        <ul class="list-group">
+
+            <li class="list-group-item firstitem">
+                Account
+                <div style="float:right">
+                    <h4 class="list-group-item-heading">Total Assets</h4>
+                    <h4 class="list-group-item-heading" style="color:gray">Today's Change</h4>
+                </div>
+            </li>
+            <li id="lstCtrl" class="list-group-item" ng-repeat="item in imgmodel" ng-init="test();" onmouseover="applyCSS(this)" onmouseout="removeCSS(this)">
+                <span style="color:blue">  {{ item.account}}  </span>
+                <div style="float:right;align-self:flex-end">
+                    <h4 id="totalasset" class="list-group-item-heading totalasset">{{item.totalasset}}</h4>
+                    <h4 id="todayschange" class="list-group-item-heading todayschange" ng-style="{color: item.todayschangecolor }">{{item.todayschange}}</h4>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
